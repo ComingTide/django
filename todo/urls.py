@@ -1,4 +1,4 @@
-"""geekshop URL Configuration
+"""todo URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -13,13 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
 from django.contrib import admin
-import mainapp.views as mainapp
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
+from main.views import ProjectModelViewSet, ToDoModelViewSet
+from users.views import UserModelViewSet
+
+
+router = DefaultRouter()
+router.register('users', UserModelViewSet)
+router.register('projects', ProjectModelViewSet)
+router.register('todo', ToDoModelViewSet)
 
 urlpatterns = [
-    path('', mainapp.main),
-    path('products/', mainapp.products),
-    path('contact/', mainapp.contact),
     path('admin/', admin.site.urls),
+    path('api/v1/', include(router.urls)),
 ]
